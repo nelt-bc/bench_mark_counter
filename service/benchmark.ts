@@ -70,11 +70,11 @@ export const benchmark = async (functions: BenchmarkFuncConfig[]) => {
 };
 
 const analyzeErrors = (results: { name: string; data: DetailedResult }[]) => {
-  console.log(`\n📊 ERROR ANALYSIS SUMMARY:`);
+  console.log(`📊 ERROR ANALYSIS SUMMARY:`);
 
   results.forEach(({ name: operationName, data }) => {
     if (data.errors && data.errors.length > 0) {
-      console.log(`\n🔍 ${operationName.toUpperCase()} ERRORS:`);
+      console.log(`🔍 ${operationName.toUpperCase()} ERRORS:`);
       console.log(`   Total Errors: ${data.errors.length}`);
 
       // Group errors by type

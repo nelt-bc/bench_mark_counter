@@ -8,6 +8,7 @@ export type Config = {
         accountId: string
     }
     singleRunTimes: number
+    nodeUrl: string
 }
 
 export const config: Config = {
@@ -15,5 +16,6 @@ export const config: Config = {
         privateKey: process.env.M_PRIVATE_KEY!,
         accountId: process.env.M_ACCOUNT_ID!
     },
-    singleRunTimes: 3
+    singleRunTimes: 3,
+    nodeUrl: process.env.NEAR_RPC ?? "https://rpc.testnet.fastnear.com"
 }

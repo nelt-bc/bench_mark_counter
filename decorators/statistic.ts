@@ -1,4 +1,4 @@
-import { camelToLowerWords, camelToUpperWords } from "../utils/string";
+import { camelToLowerWords } from "../utils/string";
 
 export type DetailedResult = {
   successCount: number;
@@ -22,9 +22,9 @@ export function statistic<T>(
 ) {
   const originalMethod = descriptor.value as (
     ...args: any[]
-  ) => PromiseSettledResult<T>[];
+  ) => Promise<PromiseSettledResult<T>[]>;
   descriptor.value = async function (...args: any[]) {
-    console.log(`\n🔍 Starting benchmark ${camelToLowerWords(propertyKey)}`);
+    console.log(`🔍 Starting benchmark ${camelToLowerWords(propertyKey)}`);
 
     const now = Date.now();
     const res = await originalMethod.apply(this, args);
@@ -67,7 +67,7 @@ export function statistic<T>(
     return {
       successCount,
       failedCount,
-      processTime: `${(Date.now() - now) / 1000}s (${times} times)`,
+      processTime: `${(end - now) / 1000}s (${times} times)`,
       errors,
       successes,
     } as DetailedResult;

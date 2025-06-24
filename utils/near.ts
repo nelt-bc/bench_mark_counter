@@ -9,7 +9,7 @@ export class NearUtils {
   near: Near;
   provider: Provider;
   db: Database;
-  constructor(nodeUrl: string = "https://rpc.testnet.fastnear.com") {
+  constructor(nodeUrl: string = config.nodeUrl) {
     const keyPair = KeyPair.fromString(
       config.masterAccount.privateKey as KeyPairString
     );
