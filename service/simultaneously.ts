@@ -10,7 +10,8 @@ export class Simultaneously {
       "counter_nelt.testnet",
       "get_counter",
       {},
-      accounts
+      accounts,
+      true
     );
   }
 
@@ -21,7 +22,7 @@ export class Simultaneously {
       "counter_nelt.testnet",
       "increment_counter",
       {},
-      accounts
+      accounts      
     );
   }
 }

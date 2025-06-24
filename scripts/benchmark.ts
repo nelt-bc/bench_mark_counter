@@ -6,14 +6,14 @@ import "reflect-metadata";
 const main = async () => {
   try {
     await benchmark([
-      {
-        name: "Single.readSingle",
-        func: Single.readSingle,
-      },
-      {
-        name: "Single.writeSingle",
-        func: Single.writeSingle,
-      },
+      // {
+      //   name: "Single.readSingle",
+      //   func: Single.readSingle,
+      // },
+      // {
+      //   name: "Single.writeSingle",
+      //   func: Single.writeSingle,
+      // },
       {
         name: "Simultaneously.readSimultaneously",
         func: Simultaneously.readSimultaneously,

@@ -34,14 +34,23 @@ export class NearUtils {
     contractId: string,
     methodName: string,
     args: Record<string, unknown>,
-    accountId: string
+    accountId: string,
+    isReadOnly: boolean = false
   ) => {
     const account = this.getAccount(accountId);
+    if (isReadOnly) {
+      return await account.provider.callFunction(
+        contractId,
+        methodName,
+        args,
+      )
+    }
+
     return await account.callFunction({
       contractId,
       methodName,
       args,
-      waitUntil: "FINAL"
+      waitUntil: "INCLUDED"
     });
   };
 
@@ -49,11 +58,12 @@ export class NearUtils {
     contractId: string,
     methodName: string,
     args: Record<string, unknown>,
-    accountIds: string[]
+    accountIds: string[],
+    isReadOnly: boolean = false
   ) => {
     return await Promise.allSettled(
       accountIds.map((accountId) =>
-        this.callFunction(contractId, methodName, args, accountId)
+        this.callFunction(contractId, methodName, args, accountId, isReadOnly)
       )
     );
   };

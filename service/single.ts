@@ -11,7 +11,7 @@ export class Single {
         .fill(null)
         .map((_, index) =>
           nearUtils
-            .callFunction("counter_nelt.testnet", "get_counter", {}, accountId)
+            .callFunction("counter_nelt.testnet", "get_counter", {}, accountId, true)
             .then((result) => ({ index, result }))
         )
     );
