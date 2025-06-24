@@ -1,6 +1,6 @@
-import { benchmark } from "./service/benchmark";
-import { Simultaneously } from "./service/simultaneously";
-import { Single } from "./service/single";
+import { benchmark } from "../service/benchmark";
+import { Simultaneously } from "../service/simultaneously";
+import { Single } from "../service/single";
 import "reflect-metadata";
 
 const main = async () => {
@@ -14,7 +14,6 @@ const main = async () => {
         name: "Single.writeSingle",
         func: Single.writeSingle,
       },
-
       {
         name: "Simultaneously.readSimultaneously",
         func: Simultaneously.readSimultaneously,

@@ -4,8 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "ts-node index.ts",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "benchmark": "ts-node scripts/benchmark.ts",
+    "accounts": "ts-node scripts/subAccount.ts"
   },
   "keywords": [],
   "author": "Nelt <synguyentien.work@gmail.com>",
@@ -13,6 +13,7 @@
   "type": "commonjs",
   "devDependencies": {
     "@types/node": "^24.0.3",
+    "@types/yargs": "^17.0.33",
     "reflect-metadata": "^0.2.2",
     "ts-node": "^10.9.2",
     "typescript": "^5.8.3"
@@ -20,6 +21,7 @@
   "dependencies": {
     "dotenv": "^16.5.0",
     "near-api-js": "^6.1.0",
-    "uuid": "^11.1.0"
+    "uuid": "^11.1.0",
+    "yargs": "^18.0.0"
   }
 }
