@@ -2,11 +2,12 @@ import { DetailedResult } from "../decorators/statistic";
 
 export type BenchmarkFunc = (
   ...args: any[]
-) => Promise<PromiseSettledResult<unknown>[]>;
+) => Promise<DetailedResult>;
 
 export type BenchmarkFuncConfig = {
   func: BenchmarkFunc;
   name: string;
+  args: any[];
 };
 
 export const benchmark = async (functions: BenchmarkFuncConfig[]) => {
@@ -23,8 +24,8 @@ export const benchmark = async (functions: BenchmarkFuncConfig[]) => {
     }
   > = {};
 
-  for (let { name, func } of functions) {
-    const funcResult = (await func()) as unknown as DetailedResult;
+  for (let { name, func, args } of functions) {
+    const funcResult = (await func(...args))
     results.push({
       name,
       data: funcResult,

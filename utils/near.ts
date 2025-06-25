@@ -4,6 +4,29 @@ import { KeyPairString } from "near-api-js/lib/utils";
 import { Database } from "./db";
 import { Provider } from "near-api-js/lib/providers";
 import { v4 as uuidv4 } from "uuid";
+import { TxExecutionStatus } from "@near-js/types";
+
+export type ContractCallParams =
+  | SingleContractCallParams
+  | SimultaneouslyContractCallParams;
+
+type SingleContractCallParams = {
+  contractId: string;
+  methodName: string;
+  args: Record<string, unknown>;
+  accountId: string;
+  isReadOnly?: boolean;
+  txFinality?: TxExecutionStatus;
+};
+
+type SimultaneouslyContractCallParams = {
+  contractId: string;
+  methodName: string;
+  args: Record<string, unknown>;
+  accountIds: string[];
+  isReadOnly?: boolean;
+  txFinality?: TxExecutionStatus;
+};
 
 export class NearUtils {
   near: Near;
@@ -30,40 +53,35 @@ export class NearUtils {
     this.db = new Database();
   }
 
-  callFunction = async (
-    contractId: string,
-    methodName: string,
-    args: Record<string, unknown>,
-    accountId: string,
-    isReadOnly: boolean = false
-  ) => {
-    const account = this.getAccount(accountId);
-    if (isReadOnly) {
-      return await account.provider.callFunction(
-        contractId,
-        methodName,
-        args,
-      )
-    }
+  private readonly callReadFunction = (params: SingleContractCallParams) => {
+    const account = this.getAccount(params.accountId);
+    return account.provider.callFunction(
+      params.contractId,
+      params.methodName,
+      params.args
+    );
+  };
 
-    return await account.callFunction({
-      contractId,
-      methodName,
-      args,
-      waitUntil: "INCLUDED"
+  private readonly callWriteFunction = (params: SingleContractCallParams) => {
+    const account = this.getAccount(params.accountId);
+    return account.callFunction({
+      contractId: params.contractId,
+      methodName: params.methodName,
+      args: params.args,
+      waitUntil: params.txFinality ?? "INCLUDED",
     });
   };
 
-  callSimultaneously = async (
-    contractId: string,
-    methodName: string,
-    args: Record<string, unknown>,
-    accountIds: string[],
-    isReadOnly: boolean = false
-  ) => {
-    return await Promise.allSettled(
-      accountIds.map((accountId) =>
-        this.callFunction(contractId, methodName, args, accountId, isReadOnly)
+  callFunction = async (params: SingleContractCallParams) => {
+    return params.isReadOnly
+      ? this.callReadFunction(params)
+      : this.callWriteFunction(params);
+  };
+
+  callSimultaneously = async (params: SimultaneouslyContractCallParams) => {
+    return Promise.allSettled(
+      params.accountIds.map((accountId) =>
+        this.callFunction({ ...params, accountId })
       )
     );
   };
